@@ -16,10 +16,7 @@ export default function Home() {
   const handleAccounts = (accounts) => {
     if (accounts.length > 0) {
       const account = accounts[0];
-      console.log('We have an authorized account: ', account);
       setConnectedAccount(account);
-    } else {
-      console.log("No authorized accounts yet")
     }
   };
 
@@ -53,7 +50,7 @@ export default function Home() {
 
       const balanceObject = await sccContract.balanceOf(connectedAccount);
       const balance = new BigNumber(balanceObject._hex).toNumber();
-      console.log("Your balance:", balance);
+      
       setBalance(balance)
     }
   }
@@ -64,14 +61,13 @@ export default function Home() {
       const signer = provider.getSigner();
       const sccContract = new ethers.Contract(contractAddress, contractABI, signer);
 
-      const createTxn = await sccContract.transfer(receiverAddress, numOfTokens, {
+      const transferTxn = await sccContract.transfer(receiverAddress, numOfTokens, {
         gasLimit: 100000,
         value: 343000000000000
       });
-      console.log("Transaction started...", createTxn.hash);
 
-      await createTxn.wait();
-      console.log("Transfered tokens", createTxn.hash);
+      await transferTxn.wait();
+      alert("Transfered " + numOfTokens + " SCC\n" + "From: " + connectedAccount + "\nTo: " + receiverAddress + "\nTxn: " + transferTxn.hash);
 
       await getBalance();
     }
@@ -95,9 +91,6 @@ export default function Home() {
   if (!connectedAccount) {
     return <button onClick={connectAccount}>Connect MetaMask Wallet</button>
   }
-
-  console.log(typeof connectedAccount);
-  console.log(typeof receiverAddress);
 
   return (
     <div>
