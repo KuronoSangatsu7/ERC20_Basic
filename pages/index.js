@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import {ethers} from "ethers";
 import abi from "../utils/ERC20Basic.json";
+import BigNumber from "bignumber.js";
 
 export default function Home() {
   const [ethereum, setEthereum] = useState(undefined);
   const [connectedAccount, setConnectedAccount] = useState(undefined);
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(-1);
 
   const contractAddress = "0x2Eea3aae265319F0c50380136eFbFa6694B04ceb";
   const contractABI = abi.abi;
@@ -48,12 +49,13 @@ export default function Home() {
       const signer = provider.getSigner();
       const sccContract = new ethers.Contract(contractAddress, contractABI, signer);
 
-      const balance = await sccContract.balanceOf(connectedAccount);
+      const balanceObject = await sccContract.balanceOf(connectedAccount);
+      const balance = new BigNumber(balanceObject._hex).toNumber();
       console.log("Your balance:", balance);
       setBalance(balance)
     }
   }
-  useEffect(() => { getBalance() }, [connectedAccount])
+  //useEffect(() => { getBalance() }, [connectedAccount])
 
 
   if (!ethereum) {
@@ -64,6 +66,12 @@ export default function Home() {
     return <button onClick={connectAccount}>Connect MetaMask Wallet</button>
   }
 
-  return <p>Connected Account: {connectedAccount}</p>
+  return (
+    <div>
+      <p>Connected Account: {connectedAccount}</p>
+      <button onClick={getBalance}>Get Balance</button>
+      <p hidden={balance === -1 ? true : false}>{balance}</p>
+    </div>
+  );
 
 }
