@@ -7,6 +7,8 @@ export default function Home() {
   const [ethereum, setEthereum] = useState(undefined);
   const [connectedAccount, setConnectedAccount] = useState(undefined);
   const [balance, setBalance] = useState(-1);
+  const [accountAddress, setAccountAddress] = useState(undefined);
+  const [numOfTokens, setNumOfTokens] = useState(0);
 
   const contractAddress = "0x2Eea3aae265319F0c50380136eFbFa6694B04ceb";
   const contractABI = abi.abi;
@@ -57,6 +59,8 @@ export default function Home() {
   }
   //useEffect(() => { getBalance() }, [connectedAccount])
 
+  const transferTokens = async () => {}
+
 
   if (!ethereum) {
     return <p>Please install MetaMask to connect to this site</p>
@@ -70,7 +74,35 @@ export default function Home() {
     <div>
       <p>Connected Account: {connectedAccount}</p>
       <button onClick={getBalance}>Check Balance</button>
-      <p hidden={balance === -1 ? true : false}>{balance}</p>
+      <p hidden={balance === -1 ? true : false}>Your current balance is: {balance}</p>
+
+      <form>
+        <label>Transfer Tokens</label>
+        <br></br>
+        <p>To Account</p>
+        <input
+          name="account-address"
+          value={accountAddress}
+          onChange={(e) => {setAccountAddress(e.target.value)}}
+        >
+        </input>
+        <br></br>
+
+        <p># of tokens</p>
+        <input
+          name="number-of-tokens"
+          value={numOfTokens}
+          onChange={(e) => {setNumOfTokens(e.target.value)}}
+        >
+        </input>
+
+        <button
+          type="submit"
+          onClick={transferTokens}
+        >
+          Transfer Tokens
+        </button>
+      </form>
     </div>
   );
 
