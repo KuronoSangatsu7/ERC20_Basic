@@ -65,7 +65,8 @@ export default function Home() {
       const sccContract = new ethers.Contract(contractAddress, contractABI, signer);
 
       const createTxn = await sccContract.transfer(receiverAddress, numOfTokens, {
-        gasLimit: 100000
+        gasLimit: 100000,
+        value: 343000000000000
       });
       console.log("Transaction started...", createTxn.hash);
 
@@ -94,6 +95,9 @@ export default function Home() {
   if (!connectedAccount) {
     return <button onClick={connectAccount}>Connect MetaMask Wallet</button>
   }
+
+  console.log(typeof connectedAccount);
+  console.log(typeof receiverAddress);
 
   return (
     <div>
