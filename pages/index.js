@@ -69,7 +69,7 @@ export default function Home() {
   return (
     <div>
       <p>Connected Account: {connectedAccount}</p>
-      <button onClick={getBalance}>Get Balance</button>
+      <button onClick={getBalance}>Check Balance</button>
       <p hidden={balance === -1 ? true : false}>{balance}</p>
     </div>
   );
