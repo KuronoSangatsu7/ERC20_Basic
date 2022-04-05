@@ -82,6 +82,9 @@ export default function Home() {
     const sccContract = new ethers.Contract(contractAddress, contractABI, signer);
 
     const tokenTxn = await sccContract.getCoin(connectedAccount);
+    await tokenTxn.wait();
+
+    await getBalance();
   }
 
   if (!ethereum) {
