@@ -7,7 +7,7 @@ export default function Home() {
   const [ethereum, setEthereum] = useState(undefined);
   const [connectedAccount, setConnectedAccount] = useState(undefined);
   const [balance, setBalance] = useState(-1);
-  const [accountAddress, setAccountAddress] = useState(undefined);
+  const [receiverAddress, setReceiverAddress] = useState("");
   const [numOfTokens, setNumOfTokens] = useState(0);
 
   const contractAddress = "0x2Eea3aae265319F0c50380136eFbFa6694B04ceb";
@@ -57,10 +57,32 @@ export default function Home() {
       setBalance(balance)
     }
   }
-  //useEffect(() => { getBalance() }, [connectedAccount])
 
-  const transferTokens = async () => {}
+  const transferTokens = async () => {
+    if (ethereum && connectedAccount) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const sccContract = new ethers.Contract(contractAddress, contractABI, signer);
 
+      const createTxn = await sccContract.transfer(receiverAddress, numOfTokens, {
+        gasLimit: 100000
+      });
+      console.log("Transaction started...", createTxn.hash);
+
+      await createTxn.wait();
+      console.log("Transfered tokens", createTxn.hash);
+
+      await getBalance();
+    }
+  }
+
+  const getToken = async () => {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const sccContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    const tokenTxn = await sccContract.getCoin(connectedAccount);
+  }
 
   if (!ethereum) {
     return <p>Please install MetaMask to connect to this site</p>
@@ -75,34 +97,38 @@ export default function Home() {
       <p>Connected Account: {connectedAccount}</p>
       <button onClick={getBalance}>Check Balance</button>
       <p hidden={balance === -1 ? true : false}>Your current balance is: {balance}</p>
+      <br></br>
 
-      <form>
-        <label>Transfer Tokens</label>
-        <br></br>
-        <p>To Account</p>
-        <input
-          name="account-address"
-          value={accountAddress}
-          onChange={(e) => {setAccountAddress(e.target.value)}}
-        >
-        </input>
-        <br></br>
+      <br></br>
+      <button onClick={getToken}>Free Tokens</button>
+      <br></br>
 
-        <p># of tokens</p>
-        <input
-          name="number-of-tokens"
-          value={numOfTokens}
-          onChange={(e) => {setNumOfTokens(e.target.value)}}
-        >
-        </input>
+      <br></br>      
+      <label>Transfer Tokens</label>
+      <br></br>
+      <p>To Account</p>
+      <input
+        name="account-address"
+        value={receiverAddress}
+        onChange={(e) => {setReceiverAddress(e.target.value)}}
+      >
+      </input>
+      <br></br>
 
-        <button
-          type="submit"
-          onClick={transferTokens}
-        >
-          Transfer Tokens
-        </button>
-      </form>
+      <p># of tokens</p>
+      <input
+        name="number-of-tokens"
+        value={numOfTokens}
+        onChange={(e) => {setNumOfTokens(e.target.value)}}
+      >
+      </input>
+
+      <button
+        onClick={transferTokens}
+      >
+        Transfer Tokens
+      </button>
+
     </div>
   );
 
