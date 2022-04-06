@@ -1,15 +1,17 @@
-# Basic Sample Hardhat Project
+# Summer Internship Prerequisite Task
+Created a simple dapp that interacts with the given Smart Contract (`SCC Token`) to display the user's current balance and offer them a transfer functionality.
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+The contract was deployed to `Rinkeby` using `Hardhat` at address:
+0x2Eea3aae265319F0c50380136eFbFa6694B04ceb
 
-Try running some of the following tasks:
+The app was created using `NextJs`, and deployed to `Vercel` at the following link:
+https://blockchain-internship-task.vercel.app/
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+
+
+
+>Author: Jaffar Totanji
+
+>Email: j.totanji@innopolis.university
+
+>Telegram: @KuroHata7
