@@ -12,6 +12,6 @@ https://blockchain-internship-task.vercel.app/
 
 >Author: Jaffar Totanji
 
->Email: j.totanji@innopolis.university
+>Email: jaafarti@gmail.com
 
 >Telegram: @KuroHata7
